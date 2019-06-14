@@ -6,12 +6,28 @@
  * and open the template in the editor.
  */
 
-echo flipText("Piet");
+include_once '../integration/DbHandler.php';
 
-function flipText($text){
-    $flippedText = "";
-    for ($index = strlen($text)-1; $index >= 0  ; $index--){
-       $flippedText = $flippedText.$text[$index]; 
+class Palindroom{
+    private $text;
+    private $flippedText;
+    
+    function flipText($text){
+        $this->text = $text;
+        $flippedText="";
+        // we gebruiken een for omdat we de rangeomvang kennen.
+        for ($index = strlen($text) - 1 ; $index > -1 ; $index --){
+            $flippedText = $flippedText . $text[$index];
+        }
+        $this->flippedText = $flippedText;
     }
-    return $flippedText;
+    
+    function getFlippedText(){
+        return $this->flippedText;
+    }
+    
+    function heeftFlippedTextEenBetekenis(){
+        $db = new DbHandler();
+        return $db->findWoord($this->flippedText);
+    }
 }
